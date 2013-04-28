@@ -2,7 +2,7 @@ require 'sinatra'
 require 'json'
 require 'mongo/driver'
 
-configure do
+configure :development do
   set :bind, '192.168.33.98'
 end
 
@@ -17,6 +17,12 @@ end
 # Get all companies, and their data
 get '/companies' do
   companies = db.companies.all
+  companies.to_json
+end
+
+# Get companies by category
+get '/companies/:category' do
+  companies = db.companies.by_category(params[:category])
   companies.to_json
 end
 
